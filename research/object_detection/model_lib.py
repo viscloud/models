@@ -36,6 +36,7 @@ from object_detection.utils import label_map_util
 from object_detection.utils import shape_utils
 from object_detection.utils import variables_helper
 from object_detection.utils import visualization_utils as vis_utils
+import pprint as pp
 
 # A map of names to methods that help build the model.
 MODEL_BUILD_UTIL_MAP = {
@@ -359,6 +360,14 @@ def create_model_fn(detection_model_fn, configs, hparams, use_tpu=False):
           tf.trainable_variables(),
           include_patterns=include_variables,
           exclude_patterns=exclude_variables)
+
+      if exclude_variables:
+          print("Exclude {} variables".format(len(exclude_variables)))
+          pp.pprint(exclude_variables)
+          print("---------------------------------------")
+      if trainable_variables:
+          pp.pprint("Training {} variables".format(len(trainable_variables)))
+          print(trainable_variables)
 
       clip_gradients_value = None
       if train_config.gradient_clipping_by_norm > 0:
@@ -689,6 +698,7 @@ def create_train_and_eval_specs(train_input_fn,
       zip(eval_spec_names, eval_input_fns)):
     # Uses final_exporter_name as exporter_name for the first eval spec for
     # backward compatibility.
+    print(index)
     if index == 0:
       exporter_name = final_exporter_name
     else:
