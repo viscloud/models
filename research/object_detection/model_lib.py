@@ -367,7 +367,8 @@ def create_model_fn(detection_model_fn, configs, hparams, use_tpu=False):
           print("---------------------------------------")
       if trainable_variables:
           pp.pprint("Training {} variables".format(len(trainable_variables)))
-          print(trainable_variables)
+          for v in trainable_variables:
+            pp.pprint(v.name)
 
       clip_gradients_value = None
       if train_config.gradient_clipping_by_norm > 0:
