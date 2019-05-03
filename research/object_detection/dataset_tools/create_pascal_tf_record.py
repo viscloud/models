@@ -60,7 +60,7 @@ def dict_to_tf_example(data,
                        dataset_directory,
                        label_map_dict,
                        ignore_difficult_instances=False,
-                       image_subdirectory='JPEGImages'):
+                       image_subdirectory=''):
   """Convert XML derived dict to tf.Example proto.
 
   Notice that this function normalizes the bounding box coordinates provided
@@ -162,7 +162,7 @@ def main(_):
   for year in years:
     logging.info('Reading from PASCAL %s dataset.', year)
     examples_path = os.path.join(data_dir, year, 'ImageSets', 'Main',
-                                 'aeroplane_' + FLAGS.set + '.txt')
+                                 'car_' + FLAGS.set + '.txt')
     annotations_dir = os.path.join(data_dir, year, FLAGS.annotations_dir)
     examples_list = dataset_util.read_examples_list(examples_path)
     for idx, example in enumerate(examples_list):
@@ -174,7 +174,7 @@ def main(_):
       xml = etree.fromstring(xml_str)
       data = dataset_util.recursive_parse_xml_to_dict(xml)['annotation']
 
-      tf_example = dict_to_tf_example(data, FLAGS.data_dir, label_map_dict,
+      tf_example = dict_to_tf_example(data, os.path.join(FLAGS.data_dir, year), label_map_dict,
                                       FLAGS.ignore_difficult_instances)
       writer.write(tf_example.SerializeToString())
 
