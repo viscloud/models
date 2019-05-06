@@ -154,6 +154,7 @@ def main(_):
   years = ['VOC2007', 'VOC2012']
   if FLAGS.year != 'merged':
     years = [FLAGS.year]
+  years = [""]
 
   writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
 
@@ -162,7 +163,7 @@ def main(_):
   for year in years:
     logging.info('Reading from PASCAL %s dataset.', year)
     examples_path = os.path.join(data_dir, year, 'ImageSets', 'Main',
-                                 'car_' + FLAGS.set + '.txt')
+                                 'pgh_bus_' + FLAGS.set + '.txt')
     annotations_dir = os.path.join(data_dir, year, FLAGS.annotations_dir)
     examples_list = dataset_util.read_examples_list(examples_path)
     for idx, example in enumerate(examples_list):
